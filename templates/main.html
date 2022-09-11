@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Heart Disease</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    </head>
+    <body>
+        <div class="container" style="margin-top: 10px">
+            <h3>Heart Disease Risk</h3>
+            <form id="predict" action="/predict" method="POST">
+                <div class="mb-3">
+                    <label for="age">Age</label>
+                    <input class="form-control" type="text" name="age" placeholder="(year)" />
+                </div>
+                <div class="mb-3">
+                    <label for="gender">Gender</label>
+                    <select class="form-select" name="gender">
+                        <option value="1">Female</option>
+                        <option value="0">Male</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="smok">Is the patient a smoker?</label>
+                    <select class="form-select" name="smok">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="cp">Chest pain</label>
+                    <select class="form-select" name="cp">
+                        <option value="4">Asymptomatic</option>
+                        <option value="1">Typical angina</option>
+                        <option value="2">Atypical angina</option>
+                        <option value="3">Non-anginal chest pain</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="trestbps">Resting SBP</label>
+                    <input class="form-control" type="text" name="trestbps" placeholder="(mmHg)" />
+                </div>
+                <div class="mb-3">
+                    <label for="chol">Cholesterol level</label>
+                    <input class="form-control" type="text" name="chol" placeholder="(mg/dL)" />
+                </div>
+                <div class="mb-3">
+                    <label for="fbs">Fasting blood glucose</label>
+                    <input class="form-control" type="text" name="fbs" placeholder="(mg/dL)" />
+                </div>
+                <div class="mb-3">
+                    <label for="restecg">Resting ECG condition</label>
+                    <select class="form-select" name="restecg">
+                        <option value="0">Normal</option>
+                        <option value="1">ST-T changes</option>
+                        <option value="2">Left ventricular hypertrophy</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="thalach">Max Heart Rate</label>
+                    <input class="form-control" type="numeric" name="thalach" placeholder="(bpm)" />
+                </div>
+                <div class="mb-3">
+                    <label for="exang">Exercise angina</label>
+                    <select class="form-select" name="exang">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="oldpeak">Exercise-induced ST depression</label>
+                    <input type="numeric" class="form-control" name="oldpeak" placeholder="(mm)" />
+                </div>
+                <div class="mb-3">
+                    <label for="slope">Slope</label>
+                    <select class="form-select" name="slope">
+                        <option value="1">Upslope</option>
+                        <option value="2">Flat</option>
+                        <option value="3">Downslope</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="ca">Number of visible vessels on choronary angiography</label>
+                    <select class="form-select" name="ca">
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="thal">Thalassemia</label>
+                    <select class="form-select" name="thal">
+                        <option value="0">Not present</option>
+                        <option value="6">Fixed defect</option>
+                        <option value="7">Reversible defect</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="zipcode">Zip code</label>
+                    <input type="text" class="form-control" name="zipcode" />
+                </div>
+                <input id="submit" type="submit" value="Go!" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#result" />
+            </form>
+            <!-- <div class="row">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#result" data-bs-whatever="@getbootstrap">Open modal</button>
+            </div> -->
+            <div class="modal fade" id="result" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="resultModalLabel">Prediction</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loading">
+                                <div class="spinner-border" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="lowrisk" class="d-none">
+                                <h4>
+                                    <i class="bi-check-circle text-success"></i> 
+                                    Low risk for heart disease
+                                </h4>
+                            </div>
+                            <div id="hirisk" class="d-none">
+                                <h4>
+                                    <i class="bi-shield-exclamation text-warning"></i> 
+                                    High risk for heart disease
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            document.getElementById('submit').addEventListener('click', function(e) {
+                e.preventDefault();
+                form = document.getElementById("predict")
+                formData = new FormData(form)
+                fetch("/predict",
+                    {
+                        body: formData,
+                        method: "post"
+                    }
+                ).then(function(result) {
+                    if(result.ok) return result.text()
+                }).then(function(pred) {
+                    console.log(pred)
+                    document.getElementById("loading").style.display="none"
+                    if(pred == "1") {
+                        document.getElementById("hirisk").classList.remove("d-none")
+                    } else {
+                        document.getElementById("lowrisk").classList.remove("d-none")
+                    }
+                })
+            })
+
+            document.getElementById('result').addEventListener('hide.bs.modal', function(e) {
+                document.getElementById("loading").style.display="block"
+                document.getElementById("hirisk").classList.add("d-none")
+                document.getElementById("lowrisk").classList.add("d-none")
+            })
+        </script>
+    </body>
+</html>
