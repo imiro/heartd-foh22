@@ -26,6 +26,9 @@ def predict():
         predictors[lbl] = float(flask.request.form[lbl])
     predictors['aqi'] = get_aqi_from_zipcode(flask.request.form["zipcode"])
 
+    if( flask.request.form["famh"] == "1" ):
+        return "1"
+
     with open("model.pkl", "rb") as f:
         model = pickle.load(f)
 
