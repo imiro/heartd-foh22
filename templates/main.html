@@ -145,6 +145,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+                            <button type="button" id="btnAction" class="btn btn-warning d-none">Refer to cardiologist</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +173,7 @@
                     document.getElementById("loading").style.display="none"
                     if(pred == "1") {
                         document.getElementById("hirisk").classList.remove("d-none")
+                        document.getElementById("btnAction").classList.remove("d-none")
                     } else {
                         document.getElementById("lowrisk").classList.remove("d-none")
                     }
@@ -178,6 +183,7 @@
             document.getElementById('result').addEventListener('hide.bs.modal', function(e) {
                 document.getElementById("loading").style.display="block"
                 document.getElementById("hirisk").classList.add("d-none")
+                document.getElementById("btnAction").classList.add("d-none")
                 document.getElementById("lowrisk").classList.add("d-none")
             })
         </script>
